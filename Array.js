@@ -439,3 +439,148 @@ var twoSum2 = function(nums, target) {
 //         console.log('res', res, 'expected', answer,'failed',);
 //     }
 // })
+
+
+// Valid Sudoku
+
+// Determine if a 9 x 9 Sudoku board is valid. Only the filled cells need to be validated according to the following rules:
+
+// Each row must contain the digits 1-9 without repetition.
+// Each column must contain the digits 1-9 without repetition.
+// Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without repetition.
+// Note:
+
+// A Sudoku board (partially filled) could be valid but is not necessarily solvable.
+// Only the filled cells need to be validated according to the mentioned rules.
+
+// Constraints:
+
+// board.length == 9
+// board[i].length == 9
+// board[i][j] is a digit 1-9 or '.'.
+
+/**
+ * @param {character[][]} board
+ * @return {boolean}
+ */
+var isValidSudoku = function(board) {
+    const hash = {
+        str: {},
+        col: {},
+        group: {}
+    };
+    for (let str = 0; str < board.length; str++) {
+        hash.str[str] = new Set();
+        for (let col = 0; col < board[str].length; col++) {
+            const gloupKey = `${Math.floor(str/3)}-${Math.floor(col/3)}`;
+            if(!hash.col[col]){
+                hash.col[col] = new Set();
+            }
+            if(!hash.group[gloupKey]){
+                hash.group[gloupKey] = new Set();
+            }
+
+            const field = board[str][col];
+
+            // Each row must contain the digits 1-9 without repetition.
+            if(hash.str[str].has(field) && field !== '.'){
+                return false;
+            }
+            hash.str[str].add(field);
+
+            // Each column must contain the digits 1-9 without repetition.
+            if(hash.col[col].has(field) && field !== '.'){
+                return false;
+            }
+            hash.col[col].add(field);
+
+            // Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without repetition.
+            if(hash.group[gloupKey].has(field) && field !== '.'){
+                return false;
+            }
+            hash.group[gloupKey].add(field);
+        }
+    }  
+    return true;
+};
+
+// tests
+// const arr = [
+//     [[
+//         ["5","3",".",".","7",".",".",".","."],
+//         ["6",".",".","1","9","5",".",".","."],
+//         [".","9","8",".",".",".",".","6","."],
+//         ["8",".",".",".","6",".",".",".","3"],
+//         ["4",".",".","8",".","3",".",".","1"],
+//         ["7",".",".",".","2",".",".",".","6"],
+//         [".","6",".",".",".",".","2","8","."],
+//         [".",".",".","4","1","9",".",".","5"],
+//         [".",".",".",".","8",".",".","7","9"]], true],
+//     [[
+//         ["8","3",".",".","7",".",".",".","."],
+//         ["6",".",".","1","9","5",".",".","."],
+//         [".","9","8",".",".",".",".","6","."],
+//         ["8",".",".",".","6",".",".",".","3"],
+//         ["4",".",".","8",".","3",".",".","1"],
+//         ["7",".",".",".","2",".",".",".","6"],
+//         [".","6",".",".",".",".","2","8","."],
+//         [".",".",".","4","1","9",".",".","5"],
+//         [".",".",".",".","8",".",".","7","9"]], false]
+// ];
+// arr.forEach(([board, answer])=>{
+//     const res = isValidSudoku(board);
+//     if(res == answer){
+//         console.log('res', res, 'expected', answer, 'passed');
+//     }else{
+//         console.log('res', res, 'expected', answer,'failed',);
+//     }
+// })
+
+
+
+// Rotate Image
+// You are given an n x n 2D matrix representing an image, rotate the image by 90 degrees (clockwise).
+// You have to rotate the image in-place, which means you have to modify the input 2D matrix directly. DO NOT allocate another 2D matrix and do the rotation.
+// Constraints:
+// n == matrix.length == matrix[i].length
+// 1 <= n <= 20
+// -1000 <= matrix[i][j] <= 1000
+
+ 
+/**
+ * @param {number[][]} matrix
+ * @return {void} Do not return anything, modify matrix in-place instead.
+ */
+var rotate = function(matrix) {
+    const length = matrix.length;
+    for (let rowIndex = 0; rowIndex < matrix.length; rowIndex++) {
+        for (let colIndex = 0; colIndex < matrix.length; colIndex++) {
+            matrix[colIndex].push(matrix[rowIndex][colIndex]);
+       }
+    }
+
+    for (let rowIndex = 0; rowIndex < matrix.length; rowIndex++) {
+        matrix[rowIndex].reverse().splice(length);
+    }
+};
+
+// tests
+// const arr = [
+//     [
+//         [[1,2,3],[4,5,6],[7,8,9]], // input
+//         [[7,4,1],[8,5,2],[9,6,3]] // output
+//     ],
+//     [
+//         [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]], // input
+//         [[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]] // output
+//     ]
+// ];
+// arr.forEach(([matrix, answer])=>{
+//     rotate(matrix);
+//     if(JSON.stringify(matrix) == JSON.stringify(answer)){
+//         console.log('res', matrix, 'expected', answer, 'passed');
+//     }else{
+//         console.log('res', matrix, 'expected', answer,'failed',);
+//     }
+// })
+
