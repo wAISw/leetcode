@@ -10,12 +10,12 @@
  * @param {character[]} s
  * @return {void} Do not return anything, modify s in-place instead.
  */
-var reverseString = function(str) {
+var reverseString = function (str) {
     for (let i = 0; i < str.length; i++) {
-        const opositeIndex = str.length-i-1;
+        const opositeIndex = str.length - i - 1;
         const val = str[i];
         const opositeVal = str[opositeIndex];
-        if(opositeIndex === i || i > opositeIndex){
+        if (opositeIndex === i || i > opositeIndex) {
             return;
         }
         str[i] = opositeVal;
@@ -61,11 +61,11 @@ var reverseString = function(str) {
  * @param {number} x
  * @return {number}
  */
-const minimum = -Math.pow(2, 31);
-const maximum = Math.pow(2, 31) - 1;
-var reverse = function(x) {
-    const reversedX = `${Math.abs(x)}`.split('').reverse().join('') * (x<0 ? -1 : 1);
-    if(reversedX < minimum || reversedX > maximum){
+var minimum = -Math.pow(2, 31);
+var maximum = Math.pow(2, 31) - 1;
+var reverse = function (x) {
+    const reversedX = `${Math.abs(x)}`.split('').reverse().join('') * (x < 0 ? -1 : 1);
+    if (reversedX < minimum || reversedX > maximum) {
         return 0;
     }
     return reversedX;
@@ -112,15 +112,15 @@ var reverse = function(x) {
  * @param {string} s
  * @return {number}
  */
-var firstUniqChar = function(s) {
+var firstUniqChar = function (s) {
     const hash = {};
     const sArr = s.split('');
-    sArr.forEach((letter)=>{
+    sArr.forEach((letter) => {
         hash[letter] = (hash[letter] || 0) + 1;
     })
     for (let i = 0; i < sArr.length; i++) {
         const letter = sArr[i];
-         if(hash[letter] === 1){
+        if (hash[letter] === 1) {
             return i
         }
     }
@@ -158,7 +158,6 @@ var firstUniqChar = function(s) {
 // })
 
 
-
 // Valid Anagram
 // Given two strings s and t, return true if t is an anagram of s, and false otherwise.
 // An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
@@ -171,17 +170,17 @@ var firstUniqChar = function(s) {
  * @param {string} t
  * @return {boolean}
  */
-var isAnagram = function(s, t) {
+var isAnagram = function (s, t) {
     return s.split('').sort().join('') === t.split('').sort().join('')
 };
 
 // WRONG 
-var isAnagram2 = function(s, t) {
+var isAnagram2 = function (s, t) {
     let sum = 0;
-    s.split('').forEach((letter)=>{
+    s.split('').forEach((letter) => {
         sum += letter.charCodeAt();
     });
-    t.split('').forEach((letter)=>{
+    t.split('').forEach((letter) => {
         sum -= letter.charCodeAt();
     });
     return !sum;
@@ -217,7 +216,7 @@ var isAnagram2 = function(s, t) {
  * @param {string} s
  * @return {boolean}
  */
-var isPalindrome = function(s) {
+var isPalindrome = function (s) {
     const formattedS = s.replace(/[\W_]/gi, '').toLowerCase();
     return formattedS === formattedS.split('').reverse().join('');
 };
@@ -234,6 +233,108 @@ var isPalindrome = function(s) {
 //     if(res == answer){
 //         console.log('res', res, 'expected', answer, 'passed');
 //     }else{
+//         console.log('res', res);
+//         console.log('exp', answer);
+//         console.log('failed');
+//     }
+// })
+
+
+// String to Integer (atoi)
+// Implement the myAtoi(string s) function, which converts a string to a 32-bit signed integer (similar to C/C++'s atoi function).
+// The algorithm for myAtoi(string s) is as follows:
+// Read in and ignore any leading whitespace.
+// Check if the next character (if not already at the end of the string) is '-' or '+'. Read this character in if it is either. This determines if the final result is negative or positive respectively. Assume the result is positive if neither is present.
+// Read in next the characters until the next non-digit character or the end of the input is reached. The rest of the string is ignored.
+// Convert these digits into an integer (i.e. "123" -> 123, "0032" -> 32). If no digits were read, then the integer is 0. Change the sign as necessary (from step 2).
+// If the integer is out of the 32-bit signed integer range [-231, 231 - 1], then clamp the integer so that it remains in the range. Specifically, integers less than -231 should be clamped to -231, and integers greater than 231 - 1 should be clamped to 231 - 1.
+// Return the integer as the final result.
+//
+// Note:
+// Only the space character ' ' is considered a whitespace character.
+// Do not ignore any characters other than the leading whitespace or the rest of the string after the digits.
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var minimum = -Math.pow(2, 31);
+var maximum = Math.pow(2, 31) - 1;
+var myAtoi = function (s) {
+    let isPresent = null;
+    let res = [];
+    for (let i = 0; i < s.split('').length; i++) {
+        const letter = s[i];
+        if (letter === ' ') {
+            if(res.length || isPresent!==null){
+                break;
+            }
+            continue;
+        }
+        if (res.length === 0 && letter != +letter) {
+            if(isPresent !== null){
+                return 0
+            }
+            if(letter === '-') {
+                isPresent = false;
+                continue;
+            }
+            if(letter === '+'){
+                isPresent = true;
+                continue;
+            }
+        }
+        if (letter != +letter) {
+            if (res.length < 1) {
+                return 0;
+            } else {
+                break;
+            }
+        }
+        if (letter == +letter) {
+            res.push(letter);
+        }
+    }
+
+    res = +res.join('') * (isPresent || isPresent==null ? 1 : -1);
+
+    if (res < minimum) {
+        return minimum;
+    }
+    if (res > maximum) {
+        return maximum;
+    }
+    return res;
+};
+var myAtoi2 = function(s) {
+    s =s.trim().split(' ')[0]
+    s = s.match(/^[\+,\-]?\d+/)
+    return Math.min(Math.max(s, Math.pow(2,31)*-1), Math.pow(2,31)-1)
+};
+
+// GOD MODE
+const myAtoi3 = (s) => {
+    const i = (m=> m ? +m : 0)(s.match(/^\s*[+-]?\d+/));
+    return i < -1*2**31 ? -1*2**31 : i > 2**31-1 ? 2**31-1 : i;
+};
+// tests
+// const arr = [
+//     ["42", 42],
+//     ["   -42", -42],
+//     ["4193 with words", 4193],
+//     ["words and 987", 0],
+//     ["   -42", -42],
+//     ["3.14159", 3],
+//     ["+1", 1],
+//     ["+-12", 0],
+//     ["   +0 123", 0],
+//     ["  +  413", 0]
+// ];
+// arr.forEach(([s, answer]) => {
+//     const res = myAtoi3(s);
+//     if (res === answer) {
+//         console.log('res', res, 'expected', answer, 'passed');
+//     } else {
 //         console.log('res', res);
 //         console.log('exp', answer);
 //         console.log('failed');
