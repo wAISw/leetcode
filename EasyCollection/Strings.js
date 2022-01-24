@@ -342,6 +342,50 @@ const myAtoi3 = (s) => {
 // })
 
 
+// Implement strStr().
+// Return the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
+// Clarification:
+// What should we return when needle is an empty string? This is a great question to ask during an interview.
+// For the purpose of this problem, we will return 0 when needle is an empty string. This is consistent to C's strstr() and Java's indexOf().
+
+/**
+ * @param {string} haystack
+ * @param {string} needle
+ * @return {number}
+ */
+var strStr = function(haystack, needle) {
+    return haystack.indexOf(needle);
+};
+
+// tests
+// const arr = [
+// {
+//     haystack: "hello",
+//     needle: "ll",
+//     output: 2
+// },
+// {
+//     haystack: "aaaaa",
+//     needle: "bba",
+//     output:-1,
+// },
+// {
+//     haystack: "",
+//     needle: "",
+//     output: 0
+// },
+// ];
+// arr.forEach(({haystack, needle, output}) => {
+//     const res = strStr(haystack, needle);
+//     if (res === output) {
+//         console.log('res', res, 'expected', output, 'passed');
+//     } else {
+//         console.log('res', res);
+//         console.log('exp', output);
+//         console.log('failed');
+//     }
+// })
+
 // Count and Say
 // The count-and-say sequence is a sequence of digit strings defined by the recursive formula:
 // countAndSay(1) = "1"

@@ -69,21 +69,21 @@ const IDLE = 'idle';
 class CountedStack {
   constructor(capacity) {
     this.capacity = capacity;
-    this.q = new Set();
+    this.q = [];
   }
 
   put(value) {
-    if (this.q.has(value) && value !== IDLE) {
+    if (this.q.includes(value) && value !== IDLE) {
       throw new Error(value);
     }
-    this.q.add(value);
-    if (this.q.size > this.capacity) {
-      this.q.delete([...this.q][0]);
+    this.q.push(value);
+    if (this.q.length > this.capacity) {
+      this.q.shift();
     }
   }
 
   isPossibleToAdd(value) {
-    return !this.q.has(value);
+    return !this.q.includes(value);
   }
 }
 
@@ -92,9 +92,9 @@ var taskScheduler = function(tasks, n) {
   let history = [];
 
   let counter = 0;
-  let needToBreak = 0
-  while (tasks.length > 0 && needToBreak<10) {
-    needToBreak++;
+  let needToBreak = leastInterval(tasks, n) // a fuse
+  while (tasks.length > 0 && needToBreak) {
+    needToBreak--;
     const task = tasks[counter];
     let nextAdditionalTask = IDLE;
     try {
@@ -115,7 +115,6 @@ var taskScheduler = function(tasks, n) {
         tasks.splice(i, 1);
       }
     }
-    console.log(stack, history);
   }
 
   return history.join('->');
@@ -137,57 +136,59 @@ const arr = [
       'idle',
       'idle',
       'Task1'].join('->'),
-  }
-  // {
-  //   tasks: [
-  //     'Task1',
-  //     'Task1',
-  //     'Task1',
-  //     'Task1',
-  //     'Task1',
-  //     'Task1',
-  //     'Task2',
-  //     'Task3',
-  //     'Task4',
-  //     'Task5',
-  //     'Task6',
-  //     'Task7',
-  //   ],
-  //   n: 2,
-  //   output: [
-  //     'Task1',
-  //     'Task2',
-  //     'Task3',
-  //     'Task1',
-  //     'Task4',
-  //     'Task5',
-  //     'Task1',
-  //     'Task6',
-  //     'Task7',
-  //     'Task1',
-  //     'idle',
-  //     'idle',
-  //     'Task1',
-  //     'idle',
-  //     'idle',
-  //     'Task1'].join('->'),
-  // },
-  // {
-  //   tasks: ['A', 'A', 'A', 'B', 'B', 'B'],
-  //   n: 2,
-  //   output: 'A->B->idle->A->B->idle->A->B',
-  // },
-  // {
-  //   tasks: ['A', 'B', 'C', 'C', 'D', 'E', 'F', 'G'],
-  //   n: 2,
-  //   output: 'A->B->C->D->E->C->F->G',
-  // },
+  },
+  {
+    tasks: [
+      'Task1',
+      'Task1',
+      'Task1',
+      'Task1',
+      'Task1',
+      'Task1',
+      'Task2',
+      'Task3',
+      'Task4',
+      'Task5',
+      'Task6',
+      'Task7',
+    ],
+    n: 2,
+    output: [
+      'Task1',
+      'Task2',
+      'Task3',
+      'Task1',
+      'Task4',
+      'Task5',
+      'Task1',
+      'Task6',
+      'Task7',
+      'Task1',
+      'idle',
+      'idle',
+      'Task1',
+      'idle',
+      'idle',
+      'Task1'].join('->'),
+  },
+  {
+    tasks: ['A', 'A', 'A', 'B', 'B', 'B'],
+    n: 2,
+    output: 'A->B->idle->A->B->idle->A->B',
+  },
+  {
+    tasks: ['A', 'B', 'C', 'C', 'D', 'E', 'F', 'G'],
+    n: 2,
+    output: 'A->B->C->D->E->C->F->G',
+  },
 ];
 arr.forEach(({ tasks, n, output }) => {
   const res = taskScheduler(tasks, n);
   if (res === output) {
-    console.log('res', res, 'expected', output, 'passed');
+    console.log('res', res, 'exp', output, 'passed');
   } else {
-    console.log('res', res, 'expected', output, 'failed');
+    console.log('failed');
+    console.log('res', res);
+    console.log('exp', output);
   }
 });
