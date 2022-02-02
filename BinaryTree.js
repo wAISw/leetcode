@@ -118,3 +118,8 @@ myTree.add(11);
 //   // TODO @abdulov remove console.log
 //   console.log('%c node', 'background: gray; color: #fff', node);
 // }, 'preOrder');
+
+module.exports = {
+  BinaryTree,
+  Node,
+}
